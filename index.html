@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KB Hub — Knowledge Base & Learning Hub IT</title>
+  <meta name="description" content="Platform tutorial pribadi: Cyber Security, Jaringan Komputer, Linux & Sysadmin, IT Support, dan Web Development." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Inter", "ui-sans-serif", "system-ui"],
+            mono: ["JetBrains Mono", "ui-monospace", "monospace"],
+          },
+          colors: {
+            kb: {
+              bg: "#0a0e14",
+              soft: "#0d1320",
+              surface: "#111827",
+              green: "#22c55e",
+              cyan: "#22d3ee",
+            },
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body class="kb-grid-bg font-sans antialiased min-h-screen flex flex-col">
+
+  <div class="fixed top-0 left-0 right-0 z-[60] kb-progress" id="scroll-progress"></div>
+
+  <header id="site-header" class="fixed top-0 inset-x-0 z-50 border-b border-white/5 bg-kb-bg/80 backdrop-blur-xl">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex h-16 items-center justify-between gap-4">
+        <a href="index.html" class="flex items-center gap-2.5 shrink-0 group">
+          <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-kb-green/10 border border-kb-green/30 text-kb-green font-mono font-bold text-sm group-hover:bg-kb-green/20 transition-colors">&gt;_</span>
+          <span class="font-mono font-bold text-lg tracking-tight text-white">KB<span class="text-kb-green">Hub</span></span>
+        </a>
+
+        <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
+          <a href="#hero" class="kb-nav-link hover:text-white transition-colors">Beranda</a>
+          <a href="#kategori" class="kb-nav-link hover:text-white transition-colors">Kategori</a>
+          <a href="#terbaru" class="kb-nav-link hover:text-white transition-colors">Artikel</a>
+          <a href="article.html" class="kb-nav-link hover:text-white transition-colors">Contoh Artikel</a>
+        </nav>
+
+        <div class="flex items-center gap-3">
+          <button id="search-trigger" class="hidden sm:flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-sm text-slate-400 hover:border-kb-green/40 hover:text-slate-200 transition-colors" aria-label="Buka pencarian">
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 10.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z"/></svg>
+            <span>Cari tutorial...</span>
+            <kbd class="ml-2 rounded border border-white/10 bg-white/5 px-1.5 py-0.5 font-mono text-[10px] text-slate-500">Ctrl K</kbd>
+          </button>
+          <button id="mobile-toggle" class="md:hidden rounded-lg border border-white/10 bg-white/5 p-2 text-slate-300 hover:text-white" aria-label="Toggle menu">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="mobile-menu" class="hidden md:hidden border-t border-white/5 bg-kb-soft/95 backdrop-blur-xl">
+      <nav class="px-4 py-4 flex flex-col gap-1 text-sm">
+        <a href="#hero" class="rounded-lg px-3 py-2.5 text-slate-300 hover:bg-white/5 hover:text-white">Beranda</a>
+        <a href="#kategori" class="rounded-lg px-3 py-2.5 text-slate-300 hover:bg-white/5 hover:text-white">Kategori</a>
+        <a href="#terbaru" class="rounded-lg px-3 py-2.5 text-slate-300 hover:bg-white/5 hover:text-white">Artikel</a>
+        <a href="article.html" class="rounded-lg px-3 py-2.5 text-slate-300 hover:bg-white/5 hover:text-white">Contoh Artikel</a>
+      </nav>
+    </div>
+  </header>
+
+  <div id="search-modal" class="fixed inset-0 z-[70] hidden">
+    <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" data-close-search></div>
+    <div class="relative mx-auto mt-24 w-full max-w-2xl px-4">
+      <div class="overflow-hidden rounded-xl border border-white/10 bg-kb-surface shadow-2xl shadow-black/50">
+        <div class="flex items-center gap-3 border-b border-white/5 px-4">
+          <svg class="h-5 w-5 text-kb-green" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 10.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z"/></svg>
+          <input id="search-input" type="text" placeholder="Ketik untuk mencari tutorial, topik, atau teknologi..." class="w-full bg-transparent py-4 text-sm text-slate-100 placeholder-slate-500 outline-none font-mono" autocomplete="off" />
+          <kbd class="rounded border border-white/10 bg-white/5 px-1.5 py-0.5 font-mono text-[10px] text-slate-500">ESC</kbd>
+        </div>
+        <div id="search-results" class="max-h-80 overflow-y-auto p-2"></div>
+      </div>
+    </div>
+  </div>
+
+  <main class="flex-1 pt-16">
+
+    <section id="hero" class="relative overflow-hidden">
+      <div class="pointer-events-none absolute -top-40 left-1/2 h-[500px] w-[800px] -translate-x-1/2 rounded-full bg-kb-green/10 blur-[140px]"></div>
+      <div class="pointer-events-none absolute top-40 -right-40 h-[350px] w-[350px] rounded-full bg-kb-cyan/10 blur-[120px]"></div>
+
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
+        <div class="grid items-center gap-14 lg:grid-cols-2">
+          <div class="kb-fade-up">
+            <div class="inline-flex items-center gap-2 rounded-full border border-kb-green/30 bg-kb-green/10 px-3.5 py-1.5 text-xs font-medium text-kb-green font-mono">
+              <span class="relative flex h-2 w-2">
+                <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-kb-green opacity-60"></span>
+                <span class="relative inline-flex h-2 w-2 rounded-full bg-kb-green"></span>
+              </span>
+              knowledge base pribadi
+            </div>
+
+            <h1 class="mt-6 text-4xl font-extrabold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
+              Belajar IT &amp; Security<br />
+              <span class="bg-gradient-to-r from-kb-green via-emerald-300 to-kb-cyan bg-clip-text text-transparent">satu tutorial dalam satu waktu.</span>
+            </h1>
+
+            <p class="mt-6 max-w-xl text-lg leading-relaxed text-slate-400">
+              Kumpulan tutorial lengkap seputar Cyber Security, Jaringan Komputer, Linux Sysadmin, IT Support, dan Web Development — ditulis dari perspektif praktisi nyata di lapangan.
+            </p>
+
+            <div class="relative mt-9 max-w-xl" id="hero-search-wrap">
+              <div class="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3.5 backdrop-blur focus-within:border-kb-green/50 focus-within:bg-white/[0.07] transition-all">
+                <svg class="h-5 w-5 shrink-0 text-kb-green" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 10.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z"/></svg>
+                <input id="hero-search-input" type="text" placeholder="Cari: subnetting, SUID, MikroTik, SQLi..." class="w-full bg-transparent text-sm text-slate-100 placeholder-slate-500 outline-none" autocomplete="off" />
+                <kbd class="hidden sm:block rounded border border-white/10 bg-white/5 px-1.5 py-0.5 font-mono text-[10px] text-slate-500">/</kbd>
+              </div>
+              <div id="hero-search-results" class="absolute left-0 right-0 top-full z-40 mt-2 hidden overflow-hidden rounded-xl border border-white/10 bg-kb-surface shadow-2xl shadow-black/50"></div>
+            </div>
+
+            <div class="mt-8 flex flex-wrap gap-x-8 gap-y-4">
+              <div>
+                <div class="font-mono text-2xl font-bold text-white" id="stat-tutorials">0</div>
+                <div class="text-xs uppercase tracking-wider text-slate-500">Tutorial</div>
+              </div>
+              <div>
+                <div class="font-mono text-2xl font-bold text-white" id="stat-categories">0</div>
+                <div class="text-xs uppercase tracking-wider text-slate-500">Kategori</div>
+              </div>
+              <div>
+                <div class="font-mono text-2xl font-bold text-white" id="stat-hours">0</div>
+                <div class="text-xs uppercase tracking-wider text-slate-500">Jam Belajar</div>
+              </div>
+              <div>
+                <div class="font-mono text-2xl font-bold text-kb-green">100%</div>
+                <div class="text-xs uppercase tracking-wider text-slate-500">Gratis</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="kb-fade-up kb-glow-green mx-auto w-full max-w-md rounded-2xl lg:max-w-none">
+            <div class="kb-terminal rounded-2xl overflow-hidden">
+              <div class="kb-terminal-bar flex items-center gap-2 px-4 py-3">
+                <span class="h-3 w-3 rounded-full bg-rose-500/80"></span>
+                <span class="h-3 w-3 rounded-full bg-amber-400/80"></span>
+                <span class="h-3 w-3 rounded-full bg-kb-green/80"></span>
+                <span class="ml-3 font-mono text-xs text-slate-500">student@kbhub:~</span>
+              </div>
+              <div class="p-5 font-mono text-[13px] leading-7 sm:text-sm">
+                <div><span class="text-kb-green">$</span> <span class="text-slate-300">whoami</span></div>
+                <div class="text-slate-500">it-learner · explorer · builder</div>
+                <div class="mt-3"><span class="text-kb-green">$</span> <span class="text-slate-300">ls ~/belajar/</span></div>
+                <div class="text-kb-cyan">cyber-security/ &nbsp; networking/ &nbsp; linux/ &nbsp; webdev/</div>
+                <div class="mt-3"><span class="text-kb-green">$</span> <span class="text-slate-300" id="typed-command"></span><span class="kb-cursor"></span></div>
+                <div id="typed-output" class="text-slate-500 min-h-[1.75rem]"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="kategori" class="border-t border-white/5 py-20">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="kb-fade-up mb-12 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p class="font-mono text-sm text-kb-green">// kategori_utama</p>
+            <h2 class="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">Jelajahi Berdasarkan Topik</h2>
+            <p class="mt-3 max-w-2xl text-slate-400">Lima rumpun ilmu inti yang saya pelajari dan dokumentasikan secara mendalam.</p>
+          </div>
+        </div>
+
+        <div id="category-grid" class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5"></div>
+      </div>
+    </section>
+
+    <section id="terbaru" class="border-t border-white/5 py-20">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="kb-fade-up mb-10 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p class="font-mono text-sm text-kb-green">// latest_tutorials</p>
+            <h2 class="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">Artikel Terbaru</h2>
+            <p class="mt-3 max-w-2xl text-slate-400">Tulisan terbaru yang sudah dipublikasikan di knowledge base ini.</p>
+          </div>
+          <div class="font-mono text-sm text-slate-500"><span id="article-count">0</span> artikel</div>
+        </div>
+
+        <div class="grid gap-8 lg:grid-cols-[1fr_300px]">
+          <div>
+            <div id="filter-bar" class="kb-fade-up mb-8 flex flex-wrap items-center gap-2"></div>
+            <div id="tutorial-grid" class="grid gap-5 sm:grid-cols-2 xl:grid-cols-3"></div>
+            <p id="empty-state" class="hidden rounded-xl border border-dashed border-white/10 py-16 text-center text-slate-500 font-mono text-sm">
+              $ ls: tidak ada artikel yang cocok dengan filter.
+            </p>
+          </div>
+
+          <aside class="lg:sticky lg:top-24 lg:self-start space-y-6">
+            <div class="kb-fade-up rounded-xl border border-white/10 bg-white/[0.03] p-5">
+              <h3 class="font-mono text-sm font-semibold text-white"><span class="text-kb-green">#</span> Navigasi Cepat</h3>
+              <ul class="mt-4 space-y-2.5 text-sm text-slate-400">
+                <li><a href="#hero" class="flex items-center gap-2 hover:text-kb-green transition-colors"><span class="text-kb-green/60">→</span> Beranda &amp; Pencarian</a></li>
+                <li><a href="#kategori" class="flex items-center gap-2 hover:text-kb-green transition-colors"><span class="text-kb-green/60">→</span> Semua Kategori</a></li>
+                <li><a href="#terbaru" class="flex items-center gap-2 hover:text-kb-green transition-colors"><span class="text-kb-green/60">→</span> Artikel Terbaru</a></li>
+                <li><a href="article.html" class="flex items-center gap-2 hover:text-kb-green transition-colors"><span class="text-kb-green/60">→</span> Template Artikel</a></li>
+              </ul>
+            </div>
+
+            <div class="kb-fade-up rounded-xl border border-white/10 bg-white/[0.03] p-5">
+              <h3 class="font-mono text-sm font-semibold text-white"><span class="text-kb-cyan">#</span> Tag Populer</h3>
+              <div id="popular-tags" class="mt-4 flex flex-wrap gap-2"></div>
+            </div>
+
+            <div class="kb-fade-up rounded-xl border border-white/10 bg-white/[0.03] p-5">
+              <h3 class="font-mono text-sm font-semibold text-white"><span class="text-amber-400">#</span> Learning Path</h3>
+              <ol class="mt-4 space-y-3 text-sm text-slate-400">
+                <li class="flex gap-3"><span class="font-mono text-amber-400/80">01</span> Dasar IT Support &amp; Hardware</li>
+                <li class="flex gap-3"><span class="font-mono text-amber-400/80">02</span> Linux Command Line</li>
+                <li class="flex gap-3"><span class="font-mono text-amber-400/80">03</span> Computer Networking</li>
+                <li class="flex gap-3"><span class="font-mono text-amber-400/80">04</span> Web Development</li>
+                <li class="flex gap-3"><span class="font-mono text-amber-400/80">05</span> Cyber Security</li>
+              </ol>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="border-t border-white/5 py-20">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="kb-fade-up kb-glow-cyan relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-kb-surface to-kb-bg p-8 sm:p-12">
+          <div class="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-kb-cyan/10 blur-[80px]"></div>
+          <div class="relative max-w-2xl">
+            <p class="font-mono text-sm text-kb-cyan">// call_to_action</p>
+            <h2 class="mt-3 text-3xl font-bold text-white sm:text-4xl">Siap memperdalam skill IT kamu?</h2>
+            <p class="mt-4 text-slate-400">Mulai dari kategori yang paling kamu butuhkan. Setiap tutorial ditulis berdasarkan pengalaman nyata di lab, server produksi, dan arena CTF.</p>
+            <div class="mt-8 flex flex-wrap gap-4">
+              <a href="#kategori" class="rounded-lg bg-kb-green px-6 py-3 text-sm font-semibold text-kb-bg hover:bg-emerald-300 transition-colors">Mulai Belajar</a>
+              <a href="#terbaru" class="rounded-lg border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-slate-200 hover:border-kb-cyan/50 hover:text-kb-cyan transition-colors">Lihat Semua Artikel</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-white/5 bg-kb-soft/60">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
+      <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="sm:col-span-2 lg:col-span-1">
+          <a href="index.html" class="flex items-center gap-2.5">
+            <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-kb-green/10 border border-kb-green/30 text-kb-green font-mono font-bold text-sm">&gt;_</span>
+            <span class="font-mono font-bold text-lg text-white">KB<span class="text-kb-green">Hub</span></span>
+          </a>
+          <p class="mt-4 max-w-xs text-sm leading-relaxed text-slate-500">Knowledge base &amp; learning hub pribadi untuk dokumentasi perjalanan belajar IT dan keamanan siber.</p>
+        </div>
+        <div>
+          <h4 class="font-mono text-sm font-semibold text-white">Kategori</h4>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="#kategori" class="hover:text-kb-green transition-colors">Cyber Security</a></li>
+            <li><a href="#kategori" class="hover:text-kb-green transition-colors">Computer Networking</a></li>
+            <li><a href="#kategori" class="hover:text-kb-green transition-colors">Linux &amp; Sysadmin</a></li>
+            <li><a href="#kategori" class="hover:text-kb-green transition-colors">IT Support &amp; Hardware</a></li>
+            <li><a href="#kategori" class="hover:text-kb-green transition-colors">Web Development</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-mono text-sm font-semibold text-white">Tautan</h4>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="article.html" class="hover:text-kb-green transition-colors">Contoh Artikel</a></li>
+            <li><a href="#terbaru" class="hover:text-kb-green transition-colors">Artikel Terbaru</a></li>
+            <li><a href="#hero" class="hover:text-kb-green transition-colors">Beranda</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-mono text-sm font-semibold text-white">Kontak</h4>
+          <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+            <li><a href="#" class="hover:text-kb-green transition-colors">GitHub</a></li>
+            <li><a href="#" class="hover:text-kb-green transition-colors">LinkedIn</a></li>
+            <li><a href="#" class="hover:text-kb-green transition-colors">Email</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/5 pt-8 sm:flex-row">
+        <p class="font-mono text-xs text-slate-600">&copy; <span id="year"></span> KB Hub · Dibangun dengan HTML, Tailwind CSS &amp; JavaScript.</p>
+        <p class="font-mono text-xs text-slate-600">stay curious · keep hacking · never stop learning</p>
+      </div>
+    </div>
+  </footer>
+
+  <button id="back-to-top" class="fixed bottom-6 right-6 z-40 hidden h-11 w-11 items-center justify-center rounded-full border border-kb-green/40 bg-kb-surface text-kb-green shadow-lg hover:bg-kb-green hover:text-kb-bg transition-colors" aria-label="Kembali ke atas">
+    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg>
+  </button>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
